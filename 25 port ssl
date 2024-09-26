@@ -1,1 +1,8 @@
+tcp/25/smtp
 
+The following certificate was at the top of the certificate
+chain sent by the remote host, but it is signed by an unknown
+certificate authority :
+
+|-Subject : CN=superset
+|-Issuer : CN=superset
