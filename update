@@ -1,0 +1,14 @@
+version: '2.1'
+#networks:
+#  iopex_network:
+services:
+  webscrap_ui:
+    image: iopexlabs/web_scrapping_ui:1.1.6
+    #build : ./api_v1
+    #networks:
+    #  - iopex_network
+    restart: on-failure:5
+    #depends_on:
+    #  - ws_db
+    ports:
+     - 8001:80
