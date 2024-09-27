@@ -1,8 +1,89 @@
-tcp/25/smtp
+postfix/postlog: warning: /etc/postfix/main.cf, line 28: overriding earlier entry: smtpd_tls_cert_file=/etc/ssl/certs/opexwise.pem
+postfix/postfix-script: warning: symlink leaves directory: /etc/postfix/./makedefs.out
+postfix/postlog: warning: /etc/postfix/main.cf, line 28: overriding earlier entry: smtpd_tls_cert_file=/etc/ssl/certs/opexwise.pem
+postfix/postfix-script: warning: /var/spool/postfix/etc/ssl/certs/Autoridad_de_Certificacion_Firmaprofesional_CIF_A62634068.pem and /etc/ssl/certs/Autoridad_de_Certificacion_Firmaprofesional_CIF_A62634068.pem differ
+root@superset:~# sudo postfix reload
+postfix: warning: /etc/postfix/main.cf, line 28: overriding earlier entry: smtpd_tls_cert_file=/etc/ssl/certs/opexwise.pem
+/usr/sbin/postconf: warning: /etc/postfix/main.cf, line 28: overriding earlier entry: smtpd_tls_cert_file=/etc/ssl/certs/opexwise.pem
+postfix/postlog: warning: /etc/postfix/main.cf, line 28: overriding earlier entry: smtpd_tls_cert_file=/etc/ssl/certs/opexwise.pem
+postfix/postfix-script: refreshing the Postfix mail system
+postsuper: warning: /etc/postfix/main.cf, line 28: overriding earlier entry: smtpd_tls_cert_file=/etc/ssl/certs/opexwise.pem
+root@superset:~# postsuper: warning: /etc/postfix/main.cf, line 28: overriding earlier entry: smtpd_tls_cert_file=/etc/ssl/certs/opexwise.pem
 
-The following certificate was at the top of the certificate
-chain sent by the remote host, but it is signed by an unknown
-certificate authority :
+root@superset:~# sudo postfix reload
+postfix: warning: /etc/postfix/main.cf, line 28: overriding earlier entry: smtpd_tls_cert_file=/etc/ssl/certs/opexwise.pem
+/usr/sbin/postconf: warning: /etc/postfix/main.cf, line 28: overriding earlier entry: smtpd_tls_cert_file=/etc/ssl/certs/opexwise.pem
+postfix/postlog: warning: /etc/postfix/main.cf, line 28: overriding earlier entry: smtpd_tls_cert_file=/etc/ssl/certs/opexwise.pem
+postfix/postfix-script: refreshing the Postfix mail system
+postsuper: warning: /etc/postfix/main.cf, line 28: overriding earlier entry: smtpd_tls_cert_file=/etc/ssl/certs/opexwise.pem
+root@superset:~# postsuper: warning: /etc/postfix/main.cf, line 28: overriding earlier entry: smtpd_tls_cert_file=/etc/ssl/certs/opexwise.pem
+^C
+root@superset:~# 
+root@superset:~# vi /etc/postfix/main.cf
+root@superset:~# vi /etc/postfix/main.cf
+root@superset:~# sudo cp /etc/ssl/certs/Autoridad_de_Certificacion_Firmaprofesional_CIF_A62634068.pem /var/spool/postfix/etc/ssl/certs/
+root@superset:~# sudo postfix reload
+postfix: warning: /etc/postfix/main.cf, line 28: overriding earlier entry: smtpd_tls_cert_file=/etc/ssl/certs/opexwise.pem
+/usr/sbin/postconf: warning: /etc/postfix/main.cf, line 28: overriding earlier entry: smtpd_tls_cert_file=/etc/ssl/certs/opexwise.pem
+postfix/postlog: warning: /etc/postfix/main.cf, line 28: overriding earlier entry: smtpd_tls_cert_file=/etc/ssl/certs/opexwise.pem
+postfix/postfix-script: refreshing the Postfix mail system
+postsuper: warning: /etc/postfix/main.cf, line 28: overriding earlier entry: smtpd_tls_cert_file=/etc/ssl/certs/opexwise.pem
+root@superset:~# postsuper: warning: /etc/postfix/main.cf, line 28: overriding earlier entry: smtpd_tls_cert_file=/etc/ssl/certs/opexwise.pem
+sudo netstat -ltnp | grep 25
+tcp        0      0 0.0.0.0:25              0.0.0.0:*               LISTEN      2168/master         
+tcp6       0      0 :::25                   :::*                    LISTEN      2168/master         
+root@superset:~# cat  /etc/postfix/main.cf
+# See /usr/share/postfix/main.cf.dist for a commented, more complete version
 
-|-Subject : CN=superset
-|-Issuer : CN=superset
+
+# Debian specific:  Specifying a file name will cause the first
+# line of that file to be used as the name.  The Debian default
+# is /etc/mailname.
+#myorigin = /etc/mailname
+
+smtpd_banner = $myhostname ESMTP $mail_name (Ubuntu)
+biff = no
+
+# appending .domain is the MUA's job.
+append_dot_mydomain = no
+
+# Uncomment the next line to generate "delayed mail" warnings
+#delay_warning_time = 4h
+
+readme_directory = no
+
+# See http://www.postfix.org/COMPATIBILITY_README.html -- default to 2 on
+# fresh installs.
+compatibility_level = 2
+
+
+
+# TLS parameters
+smtpd_tls_cert_file=/etc/ssl/certs/opexwise.pem
+smtpd_tls_cert_file=/etc/ssl/private/opexwise.key
+smtpd_tls_security_level=may
+
+smtp_tls_CApath=/etc/ssl/certs
+smtp_tls_security_level=may
+smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+
+
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
+myhostname = superset
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+mydestination = $myhostname, superset, localhost.localdomain, , localhost
+#relayhost = 10.10.246.91:25
+mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
+mailbox_size_limit = 0
+recipient_delimiter = +
+inet_interfaces = all
+inet_protocols = all
+
+relayhost = [10.10.246.91]:587
+smtp_use_tls = yes
+smtp_sasl_mechanism_filter = login
+smtp_sasl_auth_enable = yes
+smtp_sasl_security_options =
+smtp_sasl_password_maps = hash:/etc/postfix/mail1_passwd
+root@superset:~# 
