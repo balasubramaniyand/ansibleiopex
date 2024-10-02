@@ -1,0 +1,29 @@
+FROM openjdk:11-jre-slim
+
+# Set environment variables
+ENV KEYCLOAK_VERSION 15.0.2
+ENV KEYCLOAK_DIST https://github.com/keycloak/keycloak/releases/download/${KEYCLOAK_VERSION}/keycloak-${KEYCLOAK_VERSION}.tar.gz
+
+# Install necessary tools
+RUN apt-get update && apt-get install -y \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set up Keycloak
+WORKDIR /opt/jboss
+RUN curl -L -o keycloak-${KEYCLOAK_VERSION}.tar.gz ${KEYCLOAK_DIST} && \
+    tar xf keycloak-${KEYCLOAK_VERSION}.tar.gz && \
+    rm -f keycloak-${KEYCLOAK_VERSION}.tar.gz && \
+    mv keycloak-${KEYCLOAK_VERSION} keycloak
+
+# Expose ports
+EXPOSE 8080
+EXPOSE 8443
+
+# Set the entrypoint and default command
+WORKDIR /opt/jboss/keycloak
+ENTRYPOINT ["/opt/jboss/keycloak/bin/standalone.sh"]
+CMD ["-b", "0.0.0.0"]
+
+# User for Keycloak (optional, if needed)
+USER 1000
