@@ -1,43 +1,64 @@
-version: '3.7'
+alasubramaniyand@CHNIOPEXL5097:~$ sudo docker build -t test:0.1 .
+[+] Building 4.5s (5/10)                                                                                            docker:default
+ => [internal] load build definition from Dockerfile                                                                          0.0s
+ => => transferring dockerfile: 1.34kB                                                                                        0.0s
+ => WARN: SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "KC_DB_PASSWORD") (line 30)       0.0s
+ => [internal] load metadata for quay.io/keycloak/keycloak:latest                                                             0.0s
+ => [internal] load .dockerignore                                                                                             0.0s
+ => => transferring context: 2B                                                                                               0.0s
+ => CACHED [builder 1/4] FROM quay.io/keycloak/keycloak:latest                                                                0.0s
+ => ERROR [builder 2/4] RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*                          4.2s
+------                                                                                                                             
+ > [builder 2/4] RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*:
+0.181 /bin/sh: line 1: apt-get: command not found
+------
 
-services:
-  postgres:
-    image: postgres:16.2
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    networks:
-      - keycloak_network
+ 1 warning found (use docker --debug to expand):
+ - SecretsUsedInArgOrEnv: Do not use ARG or ENV instructions for sensitive data (ENV "KC_DB_PASSWORD") (line 30)
+Dockerfile:5
+--------------------
+   3 |     
+   4 |     # Install curl and other necessary packages
+   5 | >>> RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+   6 |     
+   7 |     # Set environment variables
+--------------------
+ERROR: failed to solve: process "/bin/sh -c apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*" did not complete successfully: exit code: 127
+balasubramaniyand@CHNIOPEXL5097:~$ sudo vi Dockerfile 
+balasubramaniyand@CHNIOPEXL5097:~$ cat Dockerfile 
+# Use Keycloak as the base image
+FROM quay.io/keycloak/keycloak:latest AS builder
 
-  keycloak:
-    image: quay.io/keycloak/keycloak:23.0.6
-    command: start
-    environment:
-      KC_HOSTNAME: localhost
-      KC_HOSTNAME_PORT: 8080
-      KC_HOSTNAME_STRICT_HTTPS: false
-      KC_HEALTH_ENABLED: true
-      KC_HOSTNAME_STRICT_BACKCHANNEL: false
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://postgres/${POSTGRES_DB}
-      KC_DB_USERNAME: ${POSTGRES_USER}
-      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
-      KC_HTTP_ENABLED: true
-    ports:
-      - 8080:8080
-    restart: always
-    depends_on:
-      - postgres
-    networks:
-      - keycloak_network
+# Install curl and other necessary packages
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
-volumes:
-  postgres_data:
+# Set environment variables
+ENV KC_HEALTH_ENABLED=true
+ENV KC_METRICS_ENABLED=true
+ENV KC_FEATURES=token-exchange
+ENV KC_DB=postgres
 
-networks:
-  keycloak_network:
+# Install custom providers
+RUN curl -sL https://github.com/aerogear/keycloak-metrics-spi/releases/download/4.0.0/keycloak-metrics-spi-4.0.0.jar -o /opt/keycloak/providers/keycloak-metrics-spi-4.0.0.jar
+RUN /opt/keycloak/bin/kc.sh build
+
+# Create a new stage for the final image
+FROM quay.io/keycloak/keycloak:latest
+
+# Copy the built Keycloak configuration from the builder stage
+COPY --from=builder /opt/keycloak/ /opt/keycloak/
+WORKDIR /opt/keycloak
+
+# Generate a self-signed certificate (for demonstration purposes)
+RUN keytool -genkeypair -storepass password -storetype PKCS12 -keyalg RSA -keysize 2048 -dname "CN=server" -alias server -ext "SAN:c=DNS:localhost,IP:127.0.0.1" -keystore conf/server.keystore
+
+# Set environment variables for database connection
+ENV KC_DB_URL=jdbc:postgresql://db/keycloakdb
+ENV KC_DB_USERNAME=admin
+ENV KC_DB_PASSWORD=Passw0rd
+ENV KC_HOSTNAME=localhost
+
+# Start Keycloak server
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start"]
+balasubramaniyand@CHNIOPEXL5097:~$ 
+
