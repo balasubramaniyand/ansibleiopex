@@ -1,0 +1,39 @@
+# Use Keycloak as the base image
+FROM quay.io/keycloak/keycloak:latest AS builder
+
+# Install curl and other necessary packages (using microdnf for minimal Red Hat-based image)
+RUN microdnf install -y curl && microdnf clean all
+
+# Set environment variables from the .env file (these are placeholders, values will come from .env)
+ARG KC_DB_URL
+ARG KC_DB_USERNAME
+ARG KC_DB_PASSWORD
+ARG KC_HOSTNAME
+
+ENV KC_HEALTH_ENABLED=true
+ENV KC_METRICS_ENABLED=true
+ENV KC_FEATURES=token-exchange
+ENV KC_DB=postgres
+
+# Install custom providers
+RUN curl -sL https://github.com/aerogear/keycloak-metrics-spi/releases/download/4.0.0/keycloak-metrics-spi-4.0.0.jar -o /opt/keycloak/providers/keycloak-metrics-spi-4.0.0.jar
+RUN /opt/keycloak/bin/kc.sh build
+
+# Create a new stage for the final image
+FROM quay.io/keycloak/keycloak:latest
+
+# Copy the built Keycloak configuration from the builder stage
+COPY --from=builder /opt/keycloak/ /opt/keycloak/
+WORKDIR /opt/keycloak
+
+# Generate a self-signed certificate (for demonstration purposes)
+RUN keytool -genkeypair -storepass password -storetype PKCS12 -keyalg RSA -keysize 2048 -dname "CN=server" -alias server -ext "SAN:c=DNS:localhost,IP:127.0.0.1" -keystore conf/server.keystore
+
+# Copy environment variables for database connection
+ENV KC_DB_URL=$KC_DB_URL
+ENV KC_DB_USERNAME=$KC_DB_USERNAME
+ENV KC_DB_PASSWORD=$KC_DB_PASSWORD
+ENV KC_HOSTNAME=$KC_HOSTNAME
+
+# Start Keycloak server
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start"]
