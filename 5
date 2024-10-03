@@ -1,0 +1,6 @@
+docker build \
+  --build-arg KC_DB_URL=$(grep KC_DB_URL .env | cut -d '=' -f2) \
+  --build-arg KC_DB_USERNAME=$(grep KC_DB_USERNAME .env | cut -d '=' -f2) \
+  --build-arg KC_DB_PASSWORD=$(grep KC_DB_PASSWORD .env | cut -d '=' -f2) \
+  --build-arg KC_HOSTNAME=$(grep KC_HOSTNAME .env | cut -d '=' -f2) \
+  -t test:0.1 .
