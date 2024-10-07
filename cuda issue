@@ -1,0 +1,53 @@
+root@opexwise-ml2:/var/opt/bala-irise-localai/nsfw_backend# docker-compose ps
+NAME                 COMMAND             SERVICE             STATUS              PORTS
+nsfw_backend-web-1   "python app.py"     web                 running             0.0.0.0:8070->5000/tcp, :::8070->5000/tcp
+root@opexwise-ml2:/var/opt/bala-irise-localai/nsfw_backend# docker-compose logs -f
+nsfw_backend-web-1  | 2024-10-07 11:47:23.915718: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:32] Could not find cuda drivers on your machine, GPU will not be used.
+nsfw_backend-web-1  | 2024-10-07 11:47:23.920291: I external/local_xla/xla/tsl/cuda/cudart_stub.cc:32] Could not find cuda drivers on your machine, GPU will not be used.
+nsfw_backend-web-1  | 2024-10-07 11:47:23.934107: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:485] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+nsfw_backend-web-1  | 2024-10-07 11:47:23.956466: E external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:8454] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+nsfw_backend-web-1  | 2024-10-07 11:47:23.963270: E external/local_xla/xla/stream_executor/cuda/cuda_blas.cc:1452] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+nsfw_backend-web-1  | 2024-10-07 11:47:23.979499: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+nsfw_backend-web-1  | To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+nsfw_backend-web-1  | 2024-10-07 11:47:25.834298: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+nsfw_backend-web-1  | WARNING:absl:Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+nsfw_backend-web-1  | WARNING:absl:Compiled the loaded model, but the compiled metrics have yet to be built. `model.compile_metrics` will be empty until you train or evaluate the model.
+nsfw_backend-web-1  |  * Serving Flask app 'app'
+nsfw_backend-web-1  |  * Debug mode: off
+nsfw_backend-web-1  | INFO:werkzeug:WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+nsfw_backend-web-1  |  * Running on http://127.0.0.1:5000
+nsfw_backend-web-1  | INFO:werkzeug:Press CTRL+C to quit
+^Ccanceled
+root@opexwise-ml2:/var/opt/bala-irise-localai/nsfw_backend# cat Dockerfile 
+# Use the official Python image as a base
+FROM python:3.9-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the requirements file into the container
+COPY requirements.txt .
+
+# Install system dependencies for OpenCV and other common libraries
+RUN apt-get update && \
+    apt-get install -y \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
+    && apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of your application code into the container
+COPY . .
+
+EXPOSE 8070
+
+# Command to run your application
+CMD ["python", "app.py"]
+
+root@opexwise-ml2:/var/opt/bala-irise-localai/nsfw_backend# 
