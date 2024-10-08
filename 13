@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Source and destination directories
+SOURCE_DIR="/var/opt/app/media/datapipe_attachments"
+DEST_DIR="/var/opt/airflow/manual_uploaded_files"
+
+# Get the current date and time in the specified format
+CURRENT_DATETIME=$(date '+%Y_%m_%d_%H_%M_%S')
+
+# Define both filename patterns
+for EXT in "xlsx" "csv"; do
+  FILENAME_PATTERN="attachments_${CURRENT_DATETIME}.${EXT}"
+
+  # Check if the file exists to avoid errors
+  FILE="${SOURCE_DIR}/${FILENAME_PATTERN}"
+  if [ -f "$FILE" ]; then
+    FILENAME=$(basename "$FILE")
+    cp "$FILE" "${DEST_DIR}/$FILENAME"
+
+    # Verify if the copy was successful
+    if [ $? -eq 0 ]; then
+      echo "File $FILENAME copied successfully."
+    else
+      echo "Failed to copy the file $FILENAME."
+    fi
+  else
+    echo "No file found matching the pattern $FILENAME_PATTERN."
+  fi
+done
