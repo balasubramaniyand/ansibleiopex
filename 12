@@ -1,0 +1,78 @@
+cron.log  datapipe_attachments  log  opexwise.sock  uwsgi-emperor.log
+root@opexwise-ui-demo:/var/opt/app/media# cd datapipe_attachments/
+root@opexwise-ui-demo:/var/opt/app/media/datapipe_attachments# ls
+attachments_2024_10_08_10_35_20.csv
+root@opexwise-ui-demo:/var/opt/app/media/datapipe_attachments# pwd
+/var/opt/app/media/datapipe_attachments
+root@opexwise-ui-demo:/var/opt/app/media/datapipe_attachments# cd
+root@opexwise-ui-demo:~# cd shellscript/
+root@opexwise-ui-demo:~/shellscript# ls
+test.sh
+root@opexwise-ui-demo:~/shellscript# vi test.sh
+root@opexwise-ui-demo:~/shellscript# sh -x test.sh
++ SOURCE_DIR=/var/opt/app/media/datapipe_attachments
++ DEST_DIR=/var/opt/airflow/manual_uploaded_files
++ date +%Y_%m_%d_%H_%M_%S
++ CURRENT_DATETIME=2024_10_08_10_48_46
++ FILENAME_PATTERN=attachments_2024_10_08_10_48_46.xlsx
++ FILENAME_PATTERN=attachments_2024_10_08_10_48_46.csv
++ [ -f /var/opt/app/media/datapipe_attachments/attachments_2024_10_08_10_48_46.csv ]
++ echo No file found matching the pattern attachments_2024_10_08_10_48_46.csv.
+No file found matching the pattern attachments_2024_10_08_10_48_46.csv.
+root@opexwise-ui-demo:~/shellscript# cd /var/opt/app/media/datapipe_attachments/
+root@opexwise-ui-demo:/var/opt/app/media/datapipe_attachments# ls
+attachments_2024_10_08_10_35_20.csv
+root@opexwise-ui-demo:/var/opt/app/media/datapipe_attachments# crontab -e
+No modification made
+root@opexwise-ui-demo:/var/opt/app/media/datapipe_attachments# cd
+root@opexwise-ui-demo:~# cd shellscript/
+root@opexwise-ui-demo:~/shellscript# cat test.sh
+#!/bin/bash
+
+# Source and destination directories
+
+SOURCE_DIR="/var/opt/app/media/datapipe_attachments"
+
+DEST_DIR="/var/opt/airflow/manual_uploaded_files"
+
+# Get the current date and time in the specified format
+
+CURRENT_DATETIME=$(date '+%Y_%m_%d_%H_%M_%S')
+
+# Filename pattern
+
+FILENAME_PATTERN="attachments_${CURRENT_DATETIME}.xlsx"
+FILENAME_PATTERN="attachments_${CURRENT_DATETIME}.csv"
+
+# Find all files that match the pattern
+
+for FILE in ${SOURCE_DIR}/${FILENAME_PATTERN}; do
+
+  # Check if the file exists to avoid errors
+
+  if [ -f "$FILE" ]; then
+
+    FILENAME=$(basename "$FILE")
+
+    cp "$FILE" "${DEST_DIR}/$FILENAME"
+
+    # Verify if the copy was successful
+
+    if [ $? -eq 0 ]; then
+
+      echo "File $FILENAME copied successfully."
+
+    else
+
+      echo "Failed to copy the file $FILENAME."
+
+    fi
+
+  else
+
+    echo "No file found matching the pattern $FILENAME_PATTERN."
+
+  fi
+
+done
+root@opexwise-ui-demo:~/shellscript#
