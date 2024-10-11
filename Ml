@@ -1,0 +1,37 @@
+# Use the official NVIDIA CUDA 10.1 base image with cuDNN 7
+FROM nvidia/cuda:10.1-cudnn7-runtime-ubuntu18.04
+
+# Set the working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    cmake \
+    git \
+    curl \
+    vim \
+    ca-certificates \
+    libjpeg-dev \
+    libpng-dev \
+    python3-pip \
+    python3-dev \
+    && apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies from requirements.txt
+COPY requirements.txt .
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+# (Optional) Install PyTorch with CUDA 10.1 support
+RUN pip3 install torch==1.7.1+cu101 torchvision==0.8.2+cu101 torchaudio==0.7.2 -f https://download.pytorch.org/whl/torch_stable.html
+
+# Copy the rest of the application code
+COPY . .
+
+# Expose the Flask application port
+EXPOSE 5000
+
+# Command to run the Flask application
+CMD ["flask", "run", "--host=0.0.0.0"]
