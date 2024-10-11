@@ -1,0 +1,24 @@
+FROM nvidia/cuda:10.2-runtime-ubuntu18.04
+
+# Add the NVIDIA public key
+RUN apt-get update && \
+    apt-get install -y gnupg2 && \
+    wget -q0 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub | apt-key add
+
+# Install required packages
+RUN apt-get update && apt-get install -y python3 python3-pip
+
+# Install Flask
+RUN pip3 install Flask
+
+# Copy your project files
+COPY . /app
+
+# Set the working directory
+WORKDIR /app
+
+# (Optional) Modify the entrypoint script (if applicable)
+# CMD ["python", "your_script.py"]  # Replace with your entrypoint script
+
+# Default entrypoint (assuming your main script is named main.py)
+CMD ["python", "main.py"]
