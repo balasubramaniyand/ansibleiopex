@@ -1,0 +1,66 @@
+balasubramaniyand@CHNIOPEXL5097:~/oct-developyment/nsfw_backend$ sudo docker build -t imageblur:0.0 .
+[+] Building 15.8s (8/12)                                                                                           docker:default
+ => [internal] load build definition from Dockerfile                                                                          0.0s
+ => => transferring dockerfile: 1.12kB                                                                                        0.0s
+ => [internal] load metadata for docker.io/nvidia/cuda:11.1.1-cudnn8-runtime                                                  2.4s
+ => [internal] load .dockerignore                                                                                             0.0s
+ => => transferring context: 2B                                                                                               0.0s
+ => [1/8] FROM docker.io/nvidia/cuda:11.1.1-cudnn8-runtime@sha256:d990cfd5e05fd07fa1b712a80a72220be40bfa62d78dd6a0780f2840b6  0.0s
+ => [internal] load build context                                                                                             0.0s
+ => => transferring context: 3.11kB                                                                                           0.0s
+ => CACHED [2/8] WORKDIR /app                                                                                                 0.0s
+ => CACHED [3/8] RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa  0.0s
+ => ERROR [4/8] RUN apt-get update &&     apt-get install -y --no-install-recommends     build-essential     cmake     git   13.2s
+------                                                                                                                             
+ > [4/8] RUN apt-get update &&     apt-get install -y --no-install-recommends     build-essential     cmake     git     curl     vim     ca-certificates     libjpeg-dev     libpng-dev     python3-pip     python3-dev     && apt-get clean &&     rm -rf /var/lib/apt/lists/*:                                                                                                                         
+0.498 Get:1 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64  InRelease [1581 B]                         
+0.614 Err:1 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64  InRelease                                  
+0.614   The following signatures couldn't be verified because the public key is not available: NO_PUBKEY A4B469963BF863CC
+0.659 Get:2 http://security.ubuntu.com/ubuntu focal-security InRelease [128 kB]
+0.841 Get:3 http://archive.ubuntu.com/ubuntu focal InRelease [265 kB]
+0.959 Ign:4 https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64  InRelease
+1.003 Get:5 https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64  Release [564 B]
+1.049 Get:6 https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64  Release.gpg [833 B]
+1.205 Get:7 https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64  Packages [2445 B]
+1.635 Get:8 http://security.ubuntu.com/ubuntu focal-security/universe amd64 Packages [1274 kB]
+2.490 Get:9 http://security.ubuntu.com/ubuntu focal-security/restricted amd64 Packages [4036 kB]
+2.515 Get:10 http://archive.ubuntu.com/ubuntu focal-updates InRelease [128 kB]
+2.887 Get:11 http://archive.ubuntu.com/ubuntu focal-backports InRelease [128 kB]
+2.965 Get:12 http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages [4027 kB]
+3.278 Get:13 http://archive.ubuntu.com/ubuntu focal/restricted amd64 Packages [33.4 kB]
+3.301 Get:14 http://archive.ubuntu.com/ubuntu focal/universe amd64 Packages [11.3 MB]
+3.483 Get:15 http://security.ubuntu.com/ubuntu focal-security/multiverse amd64 Packages [30.9 kB]
+5.917 Get:16 http://archive.ubuntu.com/ubuntu focal/multiverse amd64 Packages [177 kB]
+5.962 Get:17 http://archive.ubuntu.com/ubuntu focal/main amd64 Packages [1275 kB]
+6.184 Get:18 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 Packages [1565 kB]
+6.484 Get:19 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages [4490 kB]
+7.316 Get:20 http://archive.ubuntu.com/ubuntu focal-updates/multiverse amd64 Packages [33.5 kB]
+7.321 Get:21 http://archive.ubuntu.com/ubuntu focal-updates/restricted amd64 Packages [4188 kB]
+8.066 Get:22 http://archive.ubuntu.com/ubuntu focal-backports/main amd64 Packages [55.2 kB]
+8.078 Get:23 http://archive.ubuntu.com/ubuntu focal-backports/universe amd64 Packages [28.6 kB]
+8.255 Reading package lists...
+9.005 W: GPG error: https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64  InRelease: The following signatures couldn't be verified because the public key is not available: NO_PUBKEY A4B469963BF863CC
+9.005 E: The repository 'https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64  InRelease' is not signed.
+------
+Dockerfile:11
+--------------------
+  10 |     # Install system dependencies
+  11 | >>> RUN apt-get update && \
+  12 | >>>     apt-get install -y --no-install-recommends \
+  13 | >>>     build-essential \
+  14 | >>>     cmake \
+  15 | >>>     git \
+  16 | >>>     curl \
+  17 | >>>     vim \
+  18 | >>>     ca-certificates \
+  19 | >>>     libjpeg-dev \
+  20 | >>>     libpng-dev \
+  21 | >>>     python3-pip \
+  22 | >>>     python3-dev \
+  23 | >>>     && apt-get clean && \
+  24 | >>>     rm -rf /var/lib/apt/lists/*
+  25 |     
+--------------------
+ERROR: failed to solve: process "/bin/sh -c apt-get update &&     apt-get install -y --no-install-recommends     build-essential     cmake     git     curl     vim     ca-certificates     libjpeg-dev     libpng-dev     python3-pip     python3-dev     && apt-get clean &&     rm -rf /var/lib/apt/lists/*" did not complete successfully: exit code: 100
+balasubramaniyand@CHNIOPEXL5097:~/oct-developyment/nsfw_backend$ 
+
