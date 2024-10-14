@@ -1,0 +1,108 @@
+root@opexwise-ml2:~/nsfw_backend# docker build -t imageblur:0.0.2 .
+[+] Building 27.4s (9/10)                                                                                           docker:default
+ => [internal] load build definition from Dockerfile                                                                          0.0s
+ => => transferring dockerfile: 463B                                                                                          0.0s
+ => [internal] load metadata for docker.io/tensorflow/tensorflow:latest-gpu                                                   0.9s
+ => [internal] load .dockerignore                                                                                             0.0s
+ => => transferring context: 2B                                                                                               0.0s
+ => [1/6] FROM docker.io/tensorflow/tensorflow:latest-gpu@sha256:ebf7ad13136740adeee241fcfe6b14d646e431c6bc5c151d528e31ddafd  0.0s
+ => [internal] load build context                                                                                             0.0s
+ => => transferring context: 6.34kB                                                                                           0.0s
+ => CACHED [2/6] WORKDIR /app                                                                                                 0.0s
+ => CACHED [3/6] COPY requirements.txt .                                                                                      0.0s
+ => [4/6] RUN apt-get update &&     apt-get install -y     libgl1-mesa-glx     libglib2.0-0     libsm6     libxext6     lib  17.4s
+ => ERROR [5/6] RUN pip install --upgrade pip &&     pip install --no-cache-dir -r requirements.txt                           9.0s 
+------                                                                                                                             
+ > [5/6] RUN pip install --upgrade pip &&     pip install --no-cache-dir -r requirements.txt:                                      
+1.216 Requirement already satisfied: pip in /usr/local/lib/python3.11/dist-packages (24.1.2)                                       
+1.350 Collecting pip                                                                                                               
+1.380   Downloading pip-24.2-py3-none-any.whl.metadata (3.6 kB)                                                                    
+1.391 Downloading pip-24.2-py3-none-any.whl (1.8 MB)                                                                               
+1.465    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 26.2 MB/s eta 0:00:00
+1.625 Installing collected packages: pip
+1.625   Attempting uninstall: pip
+1.627     Found existing installation: pip 24.1.2
+1.709     Uninstalling pip-24.1.2:
+2.059       Successfully uninstalled pip-24.1.2
+3.347 Successfully installed pip-24.2
+3.348 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+4.286 Collecting flask (from -r requirements.txt (line 1))
+4.302   Downloading flask-3.0.3-py3-none-any.whl.metadata (3.2 kB)
+4.329 Collecting flask-cors (from -r requirements.txt (line 2))
+4.334   Downloading Flask_Cors-5.0.0-py2.py3-none-any.whl.metadata (5.5 kB)
+4.336 Requirement already satisfied: tensorflow==2.17.0 in /usr/local/lib/python3.11/dist-packages (from -r requirements.txt (line 3)) (2.17.0)
+4.503 Collecting opencv-python (from -r requirements.txt (line 5))
+4.509   Downloading opencv_python-4.10.0.84-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (20 kB)
+4.525 Requirement already satisfied: absl-py>=1.0.0 in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (2.1.0)
+4.526 Requirement already satisfied: astunparse>=1.6.0 in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (1.6.3)
+4.526 Requirement already satisfied: flatbuffers>=24.3.25 in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (24.3.25)
+4.527 Requirement already satisfied: gast!=0.5.0,!=0.5.1,!=0.5.2,>=0.2.1 in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (0.6.0)
+4.528 Requirement already satisfied: google-pasta>=0.1.1 in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (0.2.0)
+4.528 Requirement already satisfied: h5py>=3.10.0 in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (3.11.0)
+4.529 Requirement already satisfied: libclang>=13.0.0 in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (18.1.1)
+4.530 Requirement already satisfied: ml-dtypes<0.5.0,>=0.3.1 in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (0.4.0)
+4.531 Requirement already satisfied: opt-einsum>=2.3.2 in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (3.3.0)
+4.532 Requirement already satisfied: packaging in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (24.1)
+4.533 Requirement already satisfied: protobuf!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,<5.0.0dev,>=3.20.3 in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (4.25.3)
+4.534 Requirement already satisfied: requests<3,>=2.21.0 in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (2.32.3)
+4.534 Requirement already satisfied: setuptools in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (70.3.0)
+4.535 Requirement already satisfied: six>=1.12.0 in /usr/lib/python3/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (1.16.0)
+4.536 Requirement already satisfied: termcolor>=1.1.0 in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (2.4.0)
+4.536 Requirement already satisfied: typing-extensions>=3.6.6 in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (4.12.2)
+4.537 Requirement already satisfied: wrapt>=1.11.0 in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (1.16.0)
+4.538 Requirement already satisfied: grpcio<2.0,>=1.24.3 in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (1.64.1)
+4.539 Requirement already satisfied: tensorboard<2.18,>=2.17 in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (2.17.0)
+4.539 Requirement already satisfied: keras>=3.2.0 in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (3.4.1)
+4.540 Requirement already satisfied: tensorflow-io-gcs-filesystem>=0.23.1 in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (0.37.1)
+4.541 Requirement already satisfied: numpy<2.0.0,>=1.23.5 in /usr/local/lib/python3.11/dist-packages (from tensorflow==2.17.0->-r requirements.txt (line 3)) (1.26.4)
+4.544 Requirement already satisfied: Werkzeug>=3.0.0 in /usr/local/lib/python3.11/dist-packages (from flask->-r requirements.txt (line 1)) (3.0.3)
+4.571 Collecting Jinja2>=3.1.2 (from flask->-r requirements.txt (line 1))
+4.577   Downloading jinja2-3.1.4-py3-none-any.whl.metadata (2.6 kB)
+4.593 Collecting itsdangerous>=2.1.2 (from flask->-r requirements.txt (line 1))
+4.598   Downloading itsdangerous-2.2.0-py3-none-any.whl.metadata (1.9 kB)
+4.630 Collecting click>=8.1.3 (from flask->-r requirements.txt (line 1))
+4.634   Downloading click-8.1.7-py3-none-any.whl.metadata (3.0 kB)
+4.648 Collecting blinker>=1.6.2 (from flask->-r requirements.txt (line 1))
+4.652   Downloading blinker-1.8.2-py3-none-any.whl.metadata (1.6 kB)
+4.671 Requirement already satisfied: wheel<1.0,>=0.23.0 in /usr/local/lib/python3.11/dist-packages (from astunparse>=1.6.0->tensorflow==2.17.0->-r requirements.txt (line 3)) (0.43.0)
+4.683 Requirement already satisfied: MarkupSafe>=2.0 in /usr/local/lib/python3.11/dist-packages (from Jinja2>=3.1.2->flask->-r requirements.txt (line 1)) (2.1.5)
+4.687 Requirement already satisfied: rich in /usr/local/lib/python3.11/dist-packages (from keras>=3.2.0->tensorflow==2.17.0->-r requirements.txt (line 3)) (13.7.1)
+4.687 Requirement already satisfied: namex in /usr/local/lib/python3.11/dist-packages (from keras>=3.2.0->tensorflow==2.17.0->-r requirements.txt (line 3)) (0.0.8)
+4.688 Requirement already satisfied: optree in /usr/local/lib/python3.11/dist-packages (from keras>=3.2.0->tensorflow==2.17.0->-r requirements.txt (line 3)) (0.12.1)
+4.708 Requirement already satisfied: charset-normalizer<4,>=2 in /usr/local/lib/python3.11/dist-packages (from requests<3,>=2.21.0->tensorflow==2.17.0->-r requirements.txt (line 3)) (3.3.2)
+4.709 Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.11/dist-packages (from requests<3,>=2.21.0->tensorflow==2.17.0->-r requirements.txt (line 3)) (3.7)
+4.709 Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.11/dist-packages (from requests<3,>=2.21.0->tensorflow==2.17.0->-r requirements.txt (line 3)) (2.2.2)
+4.710 Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.11/dist-packages (from requests<3,>=2.21.0->tensorflow==2.17.0->-r requirements.txt (line 3)) (2024.7.4)
+4.716 Requirement already satisfied: markdown>=2.6.8 in /usr/local/lib/python3.11/dist-packages (from tensorboard<2.18,>=2.17->tensorflow==2.17.0->-r requirements.txt (line 3)) (3.6)
+4.718 Requirement already satisfied: tensorboard-data-server<0.8.0,>=0.7.0 in /usr/local/lib/python3.11/dist-packages (from tensorboard<2.18,>=2.17->tensorflow==2.17.0->-r requirements.txt (line 3)) (0.7.2)
+4.783 Requirement already satisfied: markdown-it-py>=2.2.0 in /usr/local/lib/python3.11/dist-packages (from rich->keras>=3.2.0->tensorflow==2.17.0->-r requirements.txt (line 3)) (3.0.0)
+4.784 Requirement already satisfied: pygments<3.0.0,>=2.13.0 in /usr/local/lib/python3.11/dist-packages (from rich->keras>=3.2.0->tensorflow==2.17.0->-r requirements.txt (line 3)) (2.18.0)
+4.794 Requirement already satisfied: mdurl~=0.1 in /usr/local/lib/python3.11/dist-packages (from markdown-it-py>=2.2.0->rich->keras>=3.2.0->tensorflow==2.17.0->-r requirements.txt (line 3)) (0.1.2)
+4.805 Downloading flask-3.0.3-py3-none-any.whl (101 kB)
+4.812 Downloading Flask_Cors-5.0.0-py2.py3-none-any.whl (14 kB)
+4.818 Downloading opencv_python-4.10.0.84-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (62.5 MB)
+6.224    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.5/62.5 MB 44.7 MB/s eta 0:00:00
+6.231 Downloading blinker-1.8.2-py3-none-any.whl (9.5 kB)
+6.236 Downloading click-8.1.7-py3-none-any.whl (97 kB)
+6.241 Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+6.246 Downloading jinja2-3.1.4-py3-none-any.whl (133 kB)
+6.510 Installing collected packages: opencv-python, Jinja2, itsdangerous, click, blinker, flask, flask-cors
+8.442   Attempting uninstall: blinker
+8.446     Found existing installation: blinker 1.4
+8.683 error: uninstall-distutils-installed-package
+8.683 
+8.683 × Cannot uninstall blinker 1.4
+8.683 ╰─> It is a distutils installed project and thus we cannot accurately determine which files belong to it which would lead to only a partial uninstall.
+------
+Dockerfile:16
+--------------------
+  15 |     
+  16 | >>> RUN pip install --upgrade pip && \
+  17 | >>>     pip install --no-cache-dir -r requirements.txt
+  18 |     
+--------------------
+ERROR: failed to solve: process "/bin/sh -c pip install --upgrade pip &&     pip install --no-cache-dir -r requirements.txt" did not complete successfully: exit code: 1
+root@opexwise-ml2:~/nsfw_backend# vi Dockerfile 
+root@opexwise-ml2:~/nsfw_backend# vi Dockerfile 
+root@opexwise-ml2:~/nsfw_backend# 
+
