@@ -1,0 +1,35 @@
+# Use the TensorFlow image with GPU support
+FROM tensorflow/tensorflow:latest-gpu
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the requirements.txt file into the container
+COPY requirements.txt .
+
+# Install system dependencies needed for running the app and handling image/video processing
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender1 && \
+    rm -rf /var/lib/apt/lists/*
+
+# Create and activate a virtual environment to avoid package conflicts
+RUN python3 -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# Upgrade pip and install Python dependencies
+RUN /opt/venv/bin/pip install --upgrade pip && \
+    /opt/venv/bin/pip install --no-cache-dir -r requirements.txt --ignore-installed blinker
+
+# Copy the rest of the application code into the container
+COPY . .
+
+# Expose the port (if your application uses a specific port, uncomment the next line)
+# EXPOSE 5000
+
+# Specify the default command to run the application
+CMD ["python", "app.py"]
