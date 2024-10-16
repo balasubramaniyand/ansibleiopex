@@ -1,0 +1,47 @@
+# Use Python base image (3.7 recommended for Redash)
+FROM python:3.7-slim
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    gnupg \
+    apt-transport-https \
+    libpq-dev \
+    libffi-dev \
+    sudo \
+    git \
+    wget
+
+# Set environment variables
+ENV REDASH_VERSION=10.0.0.b50363
+ENV REDASH_BASE_PATH=/app
+
+# Create the working directory
+WORKDIR $REDASH_BASE_PATH
+
+# Download and install Redash
+RUN wget https://github.com/getredash/redash/archive/refs/tags/v$REDASH_VERSION.tar.gz \
+    && tar -xzf v$REDASH_VERSION.tar.gz --strip-components=1 \
+    && rm v$REDASH_VERSION.tar.gz
+
+# Install Python dependencies
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+# Set up environment variables for Redash
+ENV PYTHONUNBUFFERED=0 \
+    REDASH_REDIS_URL=redis://redis:6379/0 \
+    REDASH_DATABASE_URL=postgresql://postgres@postgres/postgres \
+    REDASH_COOKIE_SECRET=$(openssl rand -base64 32) \
+    REDASH_SECRET_KEY=$(openssl rand -base64 32)
+
+# Expose ports (Port 5000 is used by Redash)
+EXPOSE 5000
+
+# Copy your setup script and make it executable
+COPY ./setup.sh $REDASH_BASE_PATH/setup.sh
+RUN chmod +x $REDASH_BASE_PATH/setup.sh
+
+# Define the default command to run your setup script (without starting)
+CMD ["./setup.sh", "--dont-start"]
