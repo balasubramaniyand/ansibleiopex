@@ -1,0 +1,380 @@
+balasubramaniyand@CHNIOPEXL5097:~/oct-developyment/setup$ docker-compose up -d
+Creating network "setup_default" with the default driver
+Creating setup_redash_1 ... done
+balasubramaniyand@CHNIOPEXL5097:~/oct-developyment/setup$ docker-compose ps
+     Name                   Command               State                    Ports                  
+--------------------------------------------------------------------------------------------------
+setup_redash_1   /app/bin/docker-entrypoint ...   Up      0.0.0.0:8080->5000/tcp,:::8080->5000/tcp
+balasubramaniyand@CHNIOPEXL5097:~/oct-developyment/setup$ docker-compose logs -f
+Attaching to setup_redash_1
+redash_1  | [2024-10-16 08:17:54 +0000] [1] [INFO] Starting gunicorn 20.0.4
+redash_1  | [2024-10-16 08:17:54 +0000] [1] [INFO] Listening at: http://0.0.0.0:5000 (1)
+redash_1  | [2024-10-16 08:17:54 +0000] [1] [INFO] Using worker: sync
+redash_1  | [2024-10-16 08:17:54 +0000] [9] [INFO] Booting worker with pid: 9
+redash_1  | [2024-10-16 08:17:54 +0000] [10] [INFO] Booting worker with pid: 10
+redash_1  | [2024-10-16 08:17:54 +0000] [11] [INFO] Booting worker with pid: 11
+redash_1  | [2024-10-16 08:17:54 +0000] [12] [INFO] Booting worker with pid: 12
+redash_1  | [2024-10-16 08:18:16,352][PID:12][ERROR][redash.app] Exception on / [GET]
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 550, in connect
+redash_1  |     sock = self._connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 606, in _connect
+redash_1  |     raise err
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 594, in _connect
+redash_1  |     sock.connect(socket_address)
+redash_1  | ConnectionRefusedError: [Errno 111] Connection refused
+redash_1  | 
+redash_1  | During handling of the above exception, another exception occurred:
+redash_1  | 
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+redash_1  |     response = self.full_dispatch_request()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1944, in full_dispatch_request
+redash_1  |     self.try_trigger_before_first_request_functions()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1992, in try_trigger_before_first_request_functions
+redash_1  |     func()
+redash_1  |   File "/app/redash/version_check.py", line 96, in reset_new_version_status
+redash_1  |     latest_version = get_latest_version()
+redash_1  |   File "/app/redash/version_check.py", line 102, in get_latest_version
+redash_1  |     return redis_connection.get(REDIS_KEY)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 1606, in get
+redash_1  |     return self.execute_command('GET', name)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 898, in execute_command
+redash_1  |     conn = self.connection or pool.get_connection(command_name, **options)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 1182, in get_connection
+redash_1  |     connection.connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 554, in connect
+redash_1  |     raise ConnectionError(self._error_message(e))
+redash_1  | redis.exceptions.ConnectionError: Error 111 connecting to localhost:6379. Connection refused.
+redash_1  | [2024-10-16 08:18:16,382][PID:9][ERROR][redash.app] Exception on /favicon.ico [GET]
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 550, in connect
+redash_1  |     sock = self._connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 606, in _connect
+redash_1  |     raise err
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 594, in _connect
+redash_1  |     sock.connect(socket_address)
+redash_1  | ConnectionRefusedError: [Errno 111] Connection refused
+redash_1  | 
+redash_1  | During handling of the above exception, another exception occurred:
+redash_1  | 
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+redash_1  |     response = self.full_dispatch_request()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1944, in full_dispatch_request
+redash_1  |     self.try_trigger_before_first_request_functions()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1992, in try_trigger_before_first_request_functions
+redash_1  |     func()
+redash_1  |   File "/app/redash/version_check.py", line 96, in reset_new_version_status
+redash_1  |     latest_version = get_latest_version()
+redash_1  |   File "/app/redash/version_check.py", line 102, in get_latest_version
+redash_1  |     return redis_connection.get(REDIS_KEY)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 1606, in get
+redash_1  |     return self.execute_command('GET', name)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 898, in execute_command
+redash_1  |     conn = self.connection or pool.get_connection(command_name, **options)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 1182, in get_connection
+redash_1  |     connection.connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 554, in connect
+redash_1  |     raise ConnectionError(self._error_message(e))
+redash_1  | redis.exceptions.ConnectionError: Error 111 connecting to localhost:6379. Connection refused.
+redash_1  | [2024-10-16 08:18:18,577][PID:12][ERROR][redash.app] Exception on / [GET]
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 550, in connect
+redash_1  |     sock = self._connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 606, in _connect
+redash_1  |     raise err
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 594, in _connect
+redash_1  |     sock.connect(socket_address)
+redash_1  | ConnectionRefusedError: [Errno 111] Connection refused
+redash_1  | 
+redash_1  | During handling of the above exception, another exception occurred:
+redash_1  | 
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+redash_1  |     response = self.full_dispatch_request()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1944, in full_dispatch_request
+redash_1  |     self.try_trigger_before_first_request_functions()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1992, in try_trigger_before_first_request_functions
+redash_1  |     func()
+redash_1  |   File "/app/redash/version_check.py", line 96, in reset_new_version_status
+redash_1  |     latest_version = get_latest_version()
+redash_1  |   File "/app/redash/version_check.py", line 102, in get_latest_version
+redash_1  |     return redis_connection.get(REDIS_KEY)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 1606, in get
+redash_1  |     return self.execute_command('GET', name)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 898, in execute_command
+redash_1  |     conn = self.connection or pool.get_connection(command_name, **options)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 1182, in get_connection
+redash_1  |     connection.connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 554, in connect
+redash_1  |     raise ConnectionError(self._error_message(e))
+redash_1  | redis.exceptions.ConnectionError: Error 111 connecting to localhost:6379. Connection refused.
+redash_1  | [2024-10-16 08:18:18,595][PID:11][ERROR][redash.app] Exception on /favicon.ico [GET]
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 550, in connect
+redash_1  |     sock = self._connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 606, in _connect
+redash_1  |     raise err
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 594, in _connect
+redash_1  |     sock.connect(socket_address)
+redash_1  | ConnectionRefusedError: [Errno 111] Connection refused
+redash_1  | 
+redash_1  | During handling of the above exception, another exception occurred:
+redash_1  | 
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+redash_1  |     response = self.full_dispatch_request()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1944, in full_dispatch_request
+redash_1  |     self.try_trigger_before_first_request_functions()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1992, in try_trigger_before_first_request_functions
+redash_1  |     func()
+redash_1  |   File "/app/redash/version_check.py", line 96, in reset_new_version_status
+redash_1  |     latest_version = get_latest_version()
+redash_1  |   File "/app/redash/version_check.py", line 102, in get_latest_version
+redash_1  |     return redis_connection.get(REDIS_KEY)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 1606, in get
+redash_1  |     return self.execute_command('GET', name)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 898, in execute_command
+redash_1  |     conn = self.connection or pool.get_connection(command_name, **options)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 1182, in get_connection
+redash_1  |     connection.connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 554, in connect
+redash_1  |     raise ConnectionError(self._error_message(e))
+redash_1  | redis.exceptions.ConnectionError: Error 111 connecting to localhost:6379. Connection refused.
+redash_1  | [2024-10-16 08:18:19,373][PID:9][ERROR][redash.app] Exception on / [GET]
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 550, in connect
+redash_1  |     sock = self._connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 606, in _connect
+redash_1  |     raise err
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 594, in _connect
+redash_1  |     sock.connect(socket_address)
+redash_1  | ConnectionRefusedError: [Errno 111] Connection refused
+redash_1  | 
+redash_1  | During handling of the above exception, another exception occurred:
+redash_1  | 
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+redash_1  |     response = self.full_dispatch_request()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1944, in full_dispatch_request
+redash_1  |     self.try_trigger_before_first_request_functions()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1992, in try_trigger_before_first_request_functions
+redash_1  |     func()
+redash_1  |   File "/app/redash/version_check.py", line 96, in reset_new_version_status
+redash_1  |     latest_version = get_latest_version()
+redash_1  |   File "/app/redash/version_check.py", line 102, in get_latest_version
+redash_1  |     return redis_connection.get(REDIS_KEY)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 1606, in get
+redash_1  |     return self.execute_command('GET', name)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 898, in execute_command
+redash_1  |     conn = self.connection or pool.get_connection(command_name, **options)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 1182, in get_connection
+redash_1  |     connection.connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 554, in connect
+redash_1  |     raise ConnectionError(self._error_message(e))
+redash_1  | redis.exceptions.ConnectionError: Error 111 connecting to localhost:6379. Connection refused.
+redash_1  | [2024-10-16 08:18:19,391][PID:10][ERROR][redash.app] Exception on /favicon.ico [GET]
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 550, in connect
+redash_1  |     sock = self._connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 606, in _connect
+redash_1  |     raise err
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 594, in _connect
+redash_1  |     sock.connect(socket_address)
+redash_1  | ConnectionRefusedError: [Errno 111] Connection refused
+redash_1  | 
+redash_1  | During handling of the above exception, another exception occurred:
+redash_1  | 
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+redash_1  |     response = self.full_dispatch_request()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1944, in full_dispatch_request
+redash_1  |     self.try_trigger_before_first_request_functions()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1992, in try_trigger_before_first_request_functions
+redash_1  |     func()
+redash_1  |   File "/app/redash/version_check.py", line 96, in reset_new_version_status
+redash_1  |     latest_version = get_latest_version()
+redash_1  |   File "/app/redash/version_check.py", line 102, in get_latest_version
+redash_1  |     return redis_connection.get(REDIS_KEY)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 1606, in get
+redash_1  |     return self.execute_command('GET', name)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 898, in execute_command
+redash_1  |     conn = self.connection or pool.get_connection(command_name, **options)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 1182, in get_connection
+redash_1  |     connection.connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 554, in connect
+redash_1  |     raise ConnectionError(self._error_message(e))
+redash_1  | redis.exceptions.ConnectionError: Error 111 connecting to localhost:6379. Connection refused.
+redash_1  | [2024-10-16 08:18:19,560][PID:10][ERROR][redash.app] Exception on / [GET]
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 550, in connect
+redash_1  |     sock = self._connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 606, in _connect
+redash_1  |     raise err
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 594, in _connect
+redash_1  |     sock.connect(socket_address)
+redash_1  | ConnectionRefusedError: [Errno 111] Connection refused
+redash_1  | 
+redash_1  | During handling of the above exception, another exception occurred:
+redash_1  | 
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+redash_1  |     response = self.full_dispatch_request()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1944, in full_dispatch_request
+redash_1  |     self.try_trigger_before_first_request_functions()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1992, in try_trigger_before_first_request_functions
+redash_1  |     func()
+redash_1  |   File "/app/redash/version_check.py", line 96, in reset_new_version_status
+redash_1  |     latest_version = get_latest_version()
+redash_1  |   File "/app/redash/version_check.py", line 102, in get_latest_version
+redash_1  |     return redis_connection.get(REDIS_KEY)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 1606, in get
+redash_1  |     return self.execute_command('GET', name)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 898, in execute_command
+redash_1  |     conn = self.connection or pool.get_connection(command_name, **options)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 1182, in get_connection
+redash_1  |     connection.connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 554, in connect
+redash_1  |     raise ConnectionError(self._error_message(e))
+redash_1  | redis.exceptions.ConnectionError: Error 111 connecting to localhost:6379. Connection refused.
+redash_1  | [2024-10-16 08:18:19,751][PID:11][ERROR][redash.app] Exception on / [GET]
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 550, in connect
+redash_1  |     sock = self._connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 606, in _connect
+redash_1  |     raise err
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 594, in _connect
+redash_1  |     sock.connect(socket_address)
+redash_1  | ConnectionRefusedError: [Errno 111] Connection refused
+redash_1  | 
+redash_1  | During handling of the above exception, another exception occurred:
+redash_1  | 
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+redash_1  |     response = self.full_dispatch_request()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1944, in full_dispatch_request
+redash_1  |     self.try_trigger_before_first_request_functions()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1992, in try_trigger_before_first_request_functions
+redash_1  |     func()
+redash_1  |   File "/app/redash/version_check.py", line 96, in reset_new_version_status
+redash_1  |     latest_version = get_latest_version()
+redash_1  |   File "/app/redash/version_check.py", line 102, in get_latest_version
+redash_1  |     return redis_connection.get(REDIS_KEY)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 1606, in get
+redash_1  |     return self.execute_command('GET', name)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 898, in execute_command
+redash_1  |     conn = self.connection or pool.get_connection(command_name, **options)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 1182, in get_connection
+redash_1  |     connection.connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 554, in connect
+redash_1  |     raise ConnectionError(self._error_message(e))
+redash_1  | redis.exceptions.ConnectionError: Error 111 connecting to localhost:6379. Connection refused.
+redash_1  | [2024-10-16 08:18:19,941][PID:9][ERROR][redash.app] Exception on / [GET]
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 550, in connect
+redash_1  |     sock = self._connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 606, in _connect
+redash_1  |     raise err
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 594, in _connect
+redash_1  |     sock.connect(socket_address)
+redash_1  | ConnectionRefusedError: [Errno 111] Connection refused
+redash_1  | 
+redash_1  | During handling of the above exception, another exception occurred:
+redash_1  | 
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+redash_1  |     response = self.full_dispatch_request()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1944, in full_dispatch_request
+redash_1  |     self.try_trigger_before_first_request_functions()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1992, in try_trigger_before_first_request_functions
+redash_1  |     func()
+redash_1  |   File "/app/redash/version_check.py", line 96, in reset_new_version_status
+redash_1  |     latest_version = get_latest_version()
+redash_1  |   File "/app/redash/version_check.py", line 102, in get_latest_version
+redash_1  |     return redis_connection.get(REDIS_KEY)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 1606, in get
+redash_1  |     return self.execute_command('GET', name)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 898, in execute_command
+redash_1  |     conn = self.connection or pool.get_connection(command_name, **options)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 1182, in get_connection
+redash_1  |     connection.connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 554, in connect
+redash_1  |     raise ConnectionError(self._error_message(e))
+redash_1  | redis.exceptions.ConnectionError: Error 111 connecting to localhost:6379. Connection refused.
+redash_1  | [2024-10-16 08:18:20,118][PID:11][ERROR][redash.app] Exception on / [GET]
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 550, in connect
+redash_1  |     sock = self._connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 606, in _connect
+redash_1  |     raise err
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 594, in _connect
+redash_1  |     sock.connect(socket_address)
+redash_1  | ConnectionRefusedError: [Errno 111] Connection refused
+redash_1  | 
+redash_1  | During handling of the above exception, another exception occurred:
+redash_1  | 
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+redash_1  |     response = self.full_dispatch_request()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1944, in full_dispatch_request
+redash_1  |     self.try_trigger_before_first_request_functions()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1992, in try_trigger_before_first_request_functions
+redash_1  |     func()
+redash_1  |   File "/app/redash/version_check.py", line 96, in reset_new_version_status
+redash_1  |     latest_version = get_latest_version()
+redash_1  |   File "/app/redash/version_check.py", line 102, in get_latest_version
+redash_1  |     return redis_connection.get(REDIS_KEY)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 1606, in get
+redash_1  |     return self.execute_command('GET', name)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 898, in execute_command
+redash_1  |     conn = self.connection or pool.get_connection(command_name, **options)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 1182, in get_connection
+redash_1  |     connection.connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 554, in connect
+redash_1  |     raise ConnectionError(self._error_message(e))
+redash_1  | redis.exceptions.ConnectionError: Error 111 connecting to localhost:6379. Connection refused.
+redash_1  | [2024-10-16 08:18:20,130][PID:11][ERROR][redash.app] Exception on /favicon.ico [GET]
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 550, in connect
+redash_1  |     sock = self._connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 606, in _connect
+redash_1  |     raise err
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 594, in _connect
+redash_1  |     sock.connect(socket_address)
+redash_1  | ConnectionRefusedError: [Errno 111] Connection refused
+redash_1  | 
+redash_1  | During handling of the above exception, another exception occurred:
+redash_1  | 
+redash_1  | Traceback (most recent call last):
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 2446, in wsgi_app
+redash_1  |     response = self.full_dispatch_request()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1944, in full_dispatch_request
+redash_1  |     self.try_trigger_before_first_request_functions()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/flask/app.py", line 1992, in try_trigger_before_first_request_functions
+redash_1  |     func()
+redash_1  |   File "/app/redash/version_check.py", line 96, in reset_new_version_status
+redash_1  |     latest_version = get_latest_version()
+redash_1  |   File "/app/redash/version_check.py", line 102, in get_latest_version
+redash_1  |     return redis_connection.get(REDIS_KEY)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 1606, in get
+redash_1  |     return self.execute_command('GET', name)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/client.py", line 898, in execute_command
+redash_1  |     conn = self.connection or pool.get_connection(command_name, **options)
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 1182, in get_connection
+redash_1  |     connection.connect()
+redash_1  |   File "/usr/local/lib/python3.7/site-packages/redis/connection.py", line 554, in connect
+redash_1  |     raise ConnectionError(self._error_message(e))
+redash_1  | redis.exceptions.ConnectionError: Error 111 connecting to localhost:6379. Connection refused.
+^CERROR: Aborting.
+balasubramaniyand@CHNIOPEXL5097:~/oct-developyment/setup$ cat docker-compose.yml 
+version: '3'
+services:
+  redash:
+    image: redash/redash:10.1.0.b50633
+    environment:
+      - REDASH_COOKIE_SECRET=9xmoA7ZmXbYDrOVCUvW0Fx0zPNadhWYv1sJVk9oZQbs
+    ports:
+      - "8080:5000"
+balasubramaniyand@CHNIOPEXL5097:~/oct-developyment/setup$ 
+
