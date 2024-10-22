@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  image_gen:
+    build: 
+      context: ./image_gen
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./image_gen:/app
+    command: python3 server.py --server.port=8001 --server.address=0.0.0.0
+    environment:
+      - PYTHONUNBUFFERED=1
+    stdin_open: true
+    tty: true
